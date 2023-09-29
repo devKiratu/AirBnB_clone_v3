@@ -5,6 +5,12 @@ Index view
 from flask import jsonify
 from api.v1.views import app_views
 from models import storage
+from models.amenity import Amenity
+from models.city import City
+from models.state import State
+from models.place import Place
+from models.review import Review
+from models.user import User
 
 
 @app_views.route("/status", methods=['GET'])
@@ -20,13 +26,12 @@ def count_objects():
     """
     An endpoint that retrieves the number of each objects by type
     """
-    count = {}
+    counts = {}
+    objects = {'amenities': Amenity, 'cities': City, 'places': Place,
+               'reviews': Review, 'states': State, 'users': User}
 
-    objs = {
-        "Amenity": "amenities",
-        "City": "cities"
-    }
+    for key, value in objects.items():
+        obj_count = storage.count(value)
+        counts[key] = obj_count
 
-    for key, value in objs.items():
-        count[value] = storage.count(key)
-    return jsonify(count)
+    return jsonify(counts)
