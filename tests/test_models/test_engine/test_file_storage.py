@@ -68,9 +68,9 @@ test_file_storage.py'])
                             "{:s} method needs a docstring".format(func[0]))
 
 
-@unittest.skipUnless(models.storage_t != 'db', "For file_stroage methods only")
+@unittest.skipUnless(models.storage_t != 'db', "For file_storage methods only")
 class TestFileStorageMethods(unittest.TestCase):
-    """Test existence and workings of the dbStorage methods"""
+    """Test existence and workings of the file_storage methods"""
     def test_get_method_exists(self):
         """Test get method exists in file_storage"""
         class_props = dir(models.storage)
