@@ -68,6 +68,51 @@ test_db_storage.py'])
                             "{:s} method needs a docstring".format(func[0]))
 
 
+@unittest.skipUnless(models.storage_t == 'db', "For db_stroage methods only")
+class TestDBStorageMethods(unittest.TestCase):
+    """Test existence and workings of the dbStorage methods"""
+    def test_get_method_exists(self):
+        """Test get method exists in db_storage"""
+        class_props = dir(models.storage)
+        self.assertIn('get', class_props)
+
+    def test_get_method_fetches_right_object(self):
+        """Test get method fetches correct object given the id"""
+        first_state_id = list(models.storage.all(State).values())[0].id
+        fetched_state_id = models.storage.get(State, first_state_id).id
+        self.assertEqual(first_state_id, fetched_state_id)
+
+    def test_get_method_returns_None_if_not_found(self):
+        """Test get method returns None if object is not found"""
+        result = models.storage.get(State, "nonexistentid")
+        self.assertIsNone(result)
+
+    def test_count_method_exists(self):
+        """Test count method exists in db_storage"""
+        class_props = dir(models.storage)
+        self.assertIn('count', class_props)
+
+    def test_count_all_objects(self):
+        """Test count returns correct number of all objects"""
+        expected = len(models.storage.all())
+        actual = models.storage.count()
+        self.assertEqual(expected, actual)
+
+    def test_count_specific_objects(self):
+        """Test count returns the correct number of various objects"""
+        states_expected = len(models.storage.all(State))
+        states_actual = models.storage.count(State)
+        self.assertEqual(states_expected, states_actual)
+
+        cities_expected = len(models.storage.all(City))
+        cities_actual = models.storage.count(City)
+        self.assertEqual(cities_expected, cities_actual)
+
+        places_expected = len(models.storage.all(Place))
+        places_actual = models.storage.count(Place)
+        self.assertEqual(places_expected, places_actual)
+
+
 class TestFileStorage(unittest.TestCase):
     """Test the FileStorage class"""
     @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
