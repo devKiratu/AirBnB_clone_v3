@@ -3,7 +3,7 @@
 from api.v1.views import app_views
 from models.state import State
 from models import storage
-from flask import jsonify, abort, request
+from flask import jsonify, abort, request, make_response
 
 
 @app_views.route("/states", methods=['GET'], strict_slashes=False)
@@ -44,9 +44,9 @@ def create_state():
     try:
         data = request.get_json()
     except Exception as e:
-        abort(400, "Not a JSON")
+        return make_response(jsonify({"error": "Not a JSON"}), 400)
     if data.get('name', None) is None:
-        abort(400, "Missing name")
+        return make_response(jsonify({"error": "Missing name"}), 400)
     state = State(**data)
     storage.new(state)
     storage.save()
@@ -63,7 +63,7 @@ def update_state(state_id):
     try:
         data = request.get_json()
     except Exception as e:
-        abort(400, "Not a JSON")
+        return make_response(jsonify({"error": "Not a JSON"}), 400)
     for k, v in data.items():
         if k == 'id' or k == 'created_at' or k == 'updated_at':
             continue
