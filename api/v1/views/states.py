@@ -32,7 +32,7 @@ def delete_state(state_id):
     state = storage.get(State, state_id)
     if state is None:
         abort(404)
-    storage.delete(state)
+    state.delete()
     storage.save()
     return jsonify({})
 
@@ -48,8 +48,7 @@ def create_state():
     if data.get('name', None) is None:
         return make_response(jsonify({"error": "Missing name"}), 400)
     state = State(**data)
-    storage.new(state)
-    storage.save()
+    state.save()
     return jsonify(state.to_dict()), 201
 
 
