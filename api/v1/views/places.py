@@ -126,7 +126,7 @@ def create_place(city_id):
 
     # Ensure user_id is linked to User object
     user_id = place_data.get('user_id')
-    
+
     if storage.get(User, user_id) is None:
         abort(404)
 
