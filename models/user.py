@@ -27,7 +27,10 @@ class User(BaseModel, Base):
 
     def __init__(self, *args, **kwargs):
         """initializes user"""
-        if 'password' in kwargs:
-            hashed_pwd = hashlib.md5(kwargs['password'].encode()).hexdigest()
-            kwargs['password'] = hashed_pwd
         super().__init__(*args, **kwargs)
+
+    def __setattr__(self, key, val):
+        """hash password fields when setattr is called"""
+        if key == 'password':
+            val = hashlib.md5(val.encode()).hexdigest()
+        super().__setattr__(key, val)
