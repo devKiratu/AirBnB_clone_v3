@@ -173,9 +173,10 @@ def update_place(place_id):
         return make_response(jsonify({'error': 'Not a JSON'}), 400)
 
     for key, value in place_data.items():
-        if key not in ['id', 'city_id', 'created_at', 'updated_at']:
+        options = ['id', 'user_id', 'city_id', 'created_at', 'updated_at']
+        if key not in options:
             setattr(place, key, value)
 
-    place.save()
+    storage.save()
 
     return (jsonify(place.to_dict()), 200)
