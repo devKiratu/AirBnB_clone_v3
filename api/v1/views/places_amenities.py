@@ -76,7 +76,7 @@ def delete_place_amenity(place_id, amenity_id):
     amenity.delete()
     storage.save()
 
-    return (jsonify({}), 200)
+    return {}
 
 
 @app_views.route("/places/<place_id>/amenities/<amenity_id>",
