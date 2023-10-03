@@ -111,13 +111,10 @@ def create_review(place_id):
     if place is None:
         abort(404)
 
-    review_data = {}
-
     # Check if request body is valid JSON
-    try:
-        review_data = request.get_json()
-    except Exception:
+    if not request.get_json():
         return make_response(jsonify({'error': 'Not a JSON'}), 400)
+    review_data = request.get_json()
 
     # Check if dictionary contains key user_id
     user_id = review_data.get('user_id')
@@ -162,12 +159,9 @@ def update_review(review_id):
     if place is None:
         abort(404)
 
-    review_data = {}
-
-    try:
-        review_data = request.get_json()
-    except Exception:
+    if not request.get_json():
         return make_response(jsonify({'error': 'Not a JSON'}), 400)
+    review_data = request.get_json()
 
     for k, v in review_data.items():
         if k not in ['id', 'user_id', 'place_id', 'created_at', 'updated_at']:

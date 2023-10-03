@@ -113,13 +113,10 @@ def create_place(city_id):
     if city is None:
         abort(404)
 
-    place_data = {}
-
     # Check if request body is valid JSON
-    try:
-        place_data = request.get_json()
-    except Exception:
+    if not request.get_json():
         return make_response(jsonify({'error': 'Not a JSON'}), 400)
+    place_data = request.get_json()
 
     # Check if dictionary contains key user_id
     if place_data.get('user_id') is None:
@@ -165,12 +162,9 @@ def update_place(place_id):
     if place is None:
         abort(404)
 
-    place_data = {}
-
-    try:
-        place_data = request.get_json()
-    except Exception:
+    if not request.get_json():
         return make_response(jsonify({'error': 'Not a JSON'}), 400)
+    place_data = request.get_json()
 
     for key, value in place_data.items():
         options = ['id', 'user_id', 'city_id', 'created_at', 'updated_at']
