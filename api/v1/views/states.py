@@ -40,11 +40,9 @@ def delete_state(state_id):
 @app_views.route("/states", methods=['POST'], strict_slashes=False)
 def create_state():
     """Creates a State object"""
-    data = {}
-    try:
-        data = request.get_json()
-    except Exception as e:
+    if not request.get_json():
         return make_response(jsonify({"error": "Not a JSON"}), 400)
+    data = request.get_json()
     if data.get('name', None) is None:
         return make_response(jsonify({"error": "Missing name"}), 400)
     state = State(**data)
@@ -58,11 +56,9 @@ def update_state(state_id):
     state = storage.get(State, state_id)
     if state is None:
         abort(404)
-    data = {}
-    try:
-        data = request.get_json()
-    except Exception as e:
+    if not request.get_json():
         return make_response(jsonify({"error": "Not a JSON"}), 400)
+    data = request.get_json()
     for k, v in data.items():
         if k == 'id' or k == 'created_at' or k == 'updated_at':
             continue
