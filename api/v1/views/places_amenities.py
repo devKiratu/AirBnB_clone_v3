@@ -12,6 +12,7 @@ from api.v1.views import app_views
 
 storage_type = getenv("HBNB_TYPE_STORAGE")
 
+
 @app_views.route("/places/<place_id>/amenities", methods=['GET'],
                  strict_slashes=False)
 def get_place_amenities(place_id):
