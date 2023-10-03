@@ -3,7 +3,7 @@
 View for link between Place objects and Amenity
 objects that handles all default RESTful API actions
 """
-from flask import jsonify, request, make_response, abort
+from flask import jsonify, abort
 from os import getenv
 from models import storage
 from models.place import Place
